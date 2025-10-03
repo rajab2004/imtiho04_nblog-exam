@@ -1,6 +1,8 @@
-import os
-from dotenv import load_dotenv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-load_dotenv()
+from config import Config
 
-# Config nomli class orqali qiling
+engine = create_engine(Config().DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in Config().DATABASE_URL else {})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
